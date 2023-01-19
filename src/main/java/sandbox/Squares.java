@@ -42,6 +42,7 @@ public class Squares extends Window {
     //order: non-static functions, main function, static function
 
     public static class Square extends G.VS {
+        //if static Color c, the new square color would always keep the same
         public Color c = G.rndColor();
         Square(int x, int y) {
             super(x, y, 100, 100);
@@ -51,6 +52,7 @@ public class Squares extends Window {
         public static class List extends ArrayList<Square> {
             public void draw(Graphics g) {
                 for (Square s : this) {
+                    //s.c not c
                     s.fill(g,s.c);
                 }
             }
