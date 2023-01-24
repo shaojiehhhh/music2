@@ -2,7 +2,6 @@ package sandbox;
 
 import graphicsLib.G;
 import graphicsLib.Window;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,9 +20,10 @@ public class Squares extends Window implements ActionListener {
     public static G.V mouseDelta = new G.V(0, 0);
     public static Timer timer;
     public static G.V pressedLoc = new G.V(0, 0);
+    public static final int WIDTH = UC.MAIN_WINDOW_WIDTH, HEIGHT = 700;
 
     public Squares() {
-        super("squares", 1000, 700);
+        super("squares", WIDTH, HEIGHT);
         timer = new Timer(30,this);
         timer.setInitialDelay(5000);
         timer.start();
