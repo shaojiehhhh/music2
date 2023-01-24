@@ -3,20 +3,27 @@ package sandbox;
 import graphicsLib.G;
 import graphicsLib.Window;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class Squares extends Window {
+public class Squares extends Window implements ActionListener {
     //public static G.VS theVS = new G.VS(100, 100, 200, 300);
     //public static Color theColor = G.rndColor();
     public static Square.List theList = new Square.List();
     public static Square theSquare;
     public static boolean dragging = false;
     public static G.V mouseDelta = new G.V(0, 0);
+    public static Timer timer;
 
     public Squares() {
         super("squares", 1000, 700);
+        timer = new Timer(30,this);
+        timer.setInitialDelay(5000);
+        timer.start();
     }
 
     @Override
@@ -60,6 +67,11 @@ public class Squares extends Window {
         (PANEL = new Squares()).launch();
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+
     //---------Square-------nested class
     //order: non-static functions, main function, static function
 
@@ -80,10 +92,10 @@ public class Squares extends Window {
 
         public void moveAndBounce() {
             loc.add(dv);
-            if(loc.x < 0 && dv.x < 0) {dv.x = -dv.x;}
-            if(loc.x > 1000 && dv.x > 0) {dv.x = -dv.x;}
-            if(loc.y < 0 && dv.y < 0) {dv.y = -dv.y;}
-            if(loc.y > 700 && dv.x > 0) {dv.y = -dv.y;}
+            if(xL() < 0 && dv.x < 0) {dv.x = -dv.x;}
+            if(xH() > 1000 && dv.x > 0) {dv.x = -dv.x;}
+            if(yL() < 0 && dv.y < 0) {dv.y = -dv.y;}
+            if(yH() > 700 && dv.x > 0) {dv.y = -dv.y;}
         }
 
         //-----------another nested class----ListSquare-----
