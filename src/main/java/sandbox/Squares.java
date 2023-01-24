@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Squares extends Window {
     //public static G.VS theVS = new G.VS(100, 100, 200, 300);
-    public static Color theColor = G.rndColor();
+    //public static Color theColor = G.rndColor();
     public static Square.List theList = new Square.List();
     public static Square theSquare;
     public static boolean dragging = false;
@@ -66,19 +66,32 @@ public class Squares extends Window {
     public static class Square extends G.VS {
         //if static Color c, the new square color would always keep the same
         public Color c = G.rndColor();
+        public G.V dv = new G.V(G.rnd(20)-10, G.rnd(20)-10);//max value is 20
         Square(int x, int y) {
             super(x, y, 100, 100);
+        }
+        public void draw(Graphics g) {
+            fill(g, c);  //draw
+            moveAndBounce(); //move the box(old-school animation) calculate the next step
         }
         public void resize(int x, int y) {if(x > loc.x && y > loc.y) {size.set(x - loc.x, y - loc.y);}}
 
         public void move(int x , int y) {loc.set(x, y);}
+
+        public void moveAndBounce() {
+            loc.add(dv);
+            if(loc.x < 0 && dv.x < 0) {dv.x = -dv.x;}
+            if(loc.x > 1000 && dv.x > 0) {dv.x = -dv.x;}
+            if(loc.y < 0 && dv.y < 0) {dv.y = -dv.y;}
+            if(loc.y > 700 && dv.x > 0) {dv.y = -dv.y;}
+        }
 
         //-----------another nested class----ListSquare-----
         public static class List extends ArrayList<Square> {
             public void draw(Graphics g) {
                 for (Square s : this) {
                     //s.c not c
-                    s.fill(g,s.c);
+                    s.draw(g);
                 }
             }
             public Square hit(int x, int y) {
