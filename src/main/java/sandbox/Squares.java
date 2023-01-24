@@ -18,6 +18,7 @@ public class Squares extends Window implements ActionListener {
     public static boolean dragging = false;
     public static G.V mouseDelta = new G.V(0, 0);
     public static Timer timer;
+    public static G.V pressedLoc = new G.V(0, 0);
 
     public Squares() {
         super("squares", 1000, 700);
@@ -47,6 +48,8 @@ public class Squares extends Window implements ActionListener {
             theList.add(theSquare);
         } else {
             dragging = true;
+            theSquare.dv.set(0,0);
+            pressedLoc.set(x, y);
             mouseDelta.set(theSquare.loc.x - x, theSquare.loc.y - y);
         }
         //need to write repaint() or else the OS doesn't know unless you resize the window
@@ -61,6 +64,12 @@ public class Squares extends Window implements ActionListener {
             theSquare.resize(x, y);
         }
         repaint();
+    }
+
+    public void mouseReleased (MouseEvent me) {
+        if(dragging) {
+            theSquare.dv.set(me.getX() - pressedLoc.x, me.getY() - pressedLoc.y);
+        }
     }
 
     public static void main(String[] args) {
