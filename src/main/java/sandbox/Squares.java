@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import static javax.swing.text.html.HTML.Tag.I;
+
 public class Squares extends Window implements ActionListener {
     //public static G.VS theVS = new G.VS(100, 100, 200, 300);
     //public static Color theColor = G.rndColor();
@@ -84,7 +86,7 @@ public class Squares extends Window implements ActionListener {
     //---------Square-------nested class
     //order: non-static functions, main function, static function
 
-    public static class Square extends G.VS {
+    public static class Square extends G.VS implements I.Draw{
         //if static Color c, the new square color would always keep the same
         public Color c = G.rndColor();
         public G.V dv = new G.V(G.rnd(20)-10, G.rnd(20)-10);//max value is 20
@@ -125,6 +127,5 @@ public class Squares extends Window implements ActionListener {
                 return res;
             }
         }
-
     }
 }
