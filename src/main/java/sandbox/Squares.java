@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class Squares extends Window {
-    public static G.VS theVS = new G.VS(100, 100, 200, 300);
+    //public static G.VS theVS = new G.VS(100, 100, 200, 300);
     public static Color theColor = G.rndColor();
     public static Square.List theList = new Square.List();
     public static Square theSquare;
@@ -23,7 +23,7 @@ public class Squares extends Window {
     public void paintComponent(Graphics g) {
         //random color every time
         G.clearBack(g);
-        theVS.fill(g, theColor);
+        //theVS.fill(g, theColor);
         theList.draw(g);
     }
 
@@ -34,7 +34,6 @@ public class Squares extends Window {
 //        }
         int x = me.getX(), y = me.getY();
         theSquare = theList.hit(x, y);
-        theList.add(theSquare);
         if(theSquare == null) {
             dragging = false; //we are not going to dragging
             theSquare = new Square(x, y);
