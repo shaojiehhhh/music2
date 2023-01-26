@@ -1,5 +1,6 @@
 package sandbox;
 
+import global.UC;
 import graphicsLib.G;
 import graphicsLib.Window;
 import javax.swing.*;
