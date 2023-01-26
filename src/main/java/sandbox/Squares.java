@@ -1,5 +1,6 @@
 package sandbox;
 
+import global.I;
 import global.UC;
 import graphicsLib.G;
 import graphicsLib.Window;
@@ -22,6 +23,12 @@ public class Squares extends Window implements ActionListener {
     public static Timer timer;
     public static G.V pressedLoc = new G.V(0, 0);
     public static final int WIDTH = UC.MAIN_WINDOW_WIDTH, HEIGHT = 700;
+    public static I.Area curArea;
+    public static Square BACKGROUND = new Square(0,0) {
+        public void dn(int x, int y) {theSquare =  new Square(x, y); theList.add(theSquare);}
+        public void drag(int x, int y) {theSquare.resize(x, y);}
+    };
+    static {BACKGROUND.c = Color.white; BACKGROUND.size.set(5000, 5000); theList.add(BACKGROUND);};
 
     public Squares() {
         super("squares", WIDTH, HEIGHT);
@@ -44,28 +51,16 @@ public class Squares extends Window implements ActionListener {
 //            theColor = G.rndColor();
 //        }
         int x = me.getX(), y = me.getY();
-        theSquare = theList.hit(x, y);
-        if(theSquare == null) {
-            dragging = false; //we are not going to dragging
-            theSquare = new Square(x, y);
-            theList.add(theSquare);
-        } else {
-            dragging = true;
-            theSquare.dv.set(0,0);
-            pressedLoc.set(x, y);
-            mouseDelta.set(theSquare.loc.x - x, theSquare.loc.y - y);
-        }
+        //define which area got hit
+        curArea = theList.hit(x, y);
+        curArea.dn(x, y);
         //need to write repaint() or else the OS doesn't know unless you resize the window
         repaint();
     }
 
     public void mouseDragged(MouseEvent me) {
         int x = me.getX(), y = me.getY();
-        if(dragging) {
-            theSquare.move(x + mouseDelta.x, y + mouseDelta.y);
-        } else {
-            theSquare.resize(x, y);
-        }
+        curArea.drag(x, y);
         repaint();
     }
 
@@ -87,10 +82,12 @@ public class Squares extends Window implements ActionListener {
     //---------Square-------nested class
     //order: non-static functions, main function, static function
 
-    public static class Square extends G.VS implements I.Draw{
+    public static class Square extends G.VS implements I.Draw, I.Area{
         //if static Color c, the new square color would always keep the same
         public Color c = G.rndColor();
-        public G.V dv = new G.V(G.rnd(20)-10, G.rnd(20)-10);//max value is 20
+        public G.V dv = new G.V(0,0);
+
+        //public G.V dv = new G.V(G.rnd(20)-10, G.rnd(20)-10);//max value is 20
         Square(int x, int y) {
             super(x, y, 100, 100);
         }
@@ -108,6 +105,19 @@ public class Squares extends Window implements ActionListener {
             if(xH() > 1000 && dv.x > 0) {dv.x = -dv.x;}
             if(yL() < 0 && dv.y < 0) {dv.y = -dv.y;}
             if(yH() > 700 && dv.x > 0) {dv.y = -dv.y;}
+        }
+
+        @Override
+        public void dn(int x, int y) {
+            mouseDelta.set(loc.x - x, loc.y - y);
+        }
+
+        @Override
+        public void up(int x, int y) {}
+
+        @Override
+        public void drag(int x, int y) {
+            loc.set(mouseDelta.x + x, mouseDelta.y + y);
         }
 
         //-----------another nested class----ListSquare-----
