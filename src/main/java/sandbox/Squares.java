@@ -3,6 +3,7 @@ package sandbox;
 import global.I;
 import global.UC;
 import graphicsLib.G;
+import graphicsLib.Spline;
 import graphicsLib.Window;
 import javax.swing.*;
 import java.awt.*;
@@ -43,6 +44,9 @@ public class Squares extends Window implements ActionListener {
         G.clearBack(g);
         //theVS.fill(g, theColor);
         theList.draw(g);
+        if(theList.size() > 3) {
+            Spline.pSpline(g,theList.get(1).loc, theList.get(2).loc, theList.get(3).loc, 5);
+        }
     }
 
     @Override
