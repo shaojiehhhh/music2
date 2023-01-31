@@ -31,6 +31,10 @@ public class G {
         public void set(int x, int y) {this.x = x; this.y = y;}
         //make the data element private; make function public
         public void add(V v){x += v.x; y += v.y;}
+        public void set(V v) {
+            this.x = v.x;
+            this.y = v.y;
+        }
     }
 
     public static class VS{
@@ -51,23 +55,72 @@ public class G {
 
        public int xL() {return loc.x;}
        public int xH() {return loc.x + size.x;}
-       //public int
+       //public int xH {return loc.x + size.x/2;}
        public int yL() {return loc.y;}
        public int yH() {return loc.y + size.y;}
-       //public int
+       //public int yH() {return loc.y + size.y/2;}
 
     }
 
     public static class LoHi{
         public int lo, hi;
+        public LoHi(int min, int max) {lo = min; hi = max;}
+        public void add(int v) {if(v < lo) {lo = v;}if(v > hi) {hi = v;}}
+        public void set(int v) {lo = v;hi = v;}
+        public int size(){return (hi-lo) > 0 ? (hi-lo) : 1;}
     }
 
     //bounding box
     public static class BBOX{
-        public LoHi H, V;
+        public LoHi h, v;
+        public BBOX(){
+            h = new LoHi(0,0);
+            v = new LoHi(0,0);
+        }
+        public void set(int x, int y) {
+            h.set(x);
+            v.set(y);
+        }
+        public void add(int x, int y) {h.add(x);v.add(y);}
+
+        public void add(V v) {h.add(v.x);this.v.add(v.y);} //add a single Vector E
+
+        public VS getNewVS() {
+            return new VS(h.lo, v.lo, h.size(), v.size());
+        }
+        public void draw(Graphics g) {
+            g.drawRect(h.lo, v.lo, h.size(), v.size());
+        }
     }
+
     //Pole line whole long list of x y z
-    public static class PL{
+    public static class PL {
+        public V[] points;
+
+        public PL(int n) {
+            points = new V[n];
+            for (int i = 0; i < n; i++) {points[i] = new V(0, 0);}
+        }
+
+        public int size() {return points.length;}
+
+        public void drawN(Graphics g, int n) {
+            for (int i = 1; i < n; i++) {
+                g.drawLine(points[i-1].x, points[i - 1].y, points[i].x, points[i].y);
+            }
+        }
+        public void drawNDots(Graphics g, int n) {
+            for (int i = 0; i < n; i++) {
+                g.drawOval(points[i].x - 1, points[i].y - 1, 3, 3);
+            }
+        }
+
+        public void drawDots(Graphics g) {drawNDots(g, size());
+        }
+        public void draw(Graphics g) {drawN(g, size());}
 
     }
+
 }
+
+
