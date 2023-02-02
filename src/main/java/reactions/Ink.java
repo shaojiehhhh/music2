@@ -8,18 +8,46 @@ import java.awt.*;
 import java.nio.Buffer;
 import java.util.ArrayList;
 
-public class Ink extends G.PL implements I.Show {
+public class Ink implements I.Show {
     public static Buffer BUFFER = new Buffer();
+//    public static G.VS temp = new G.VS(100, 100, 100, 100); //temp coordinate system
+    public Norn norn;
+    public G.VS vs;
 
     public Ink(){
-        super(BUFFER.n);
-        for(int i = 0; i < BUFFER.n; i++) {
-            points[i].set(BUFFER.points[i]);
-        }
+        norn = new Norn();
+        vs = BUFFER.bbox.getNewVS();
     }
     @Override
     public void show(Graphics g) {
-        draw(g);
+        g.setColor(UC.ink_color);
+        norn.drawAt(g, vs);
+    }
+    //-----------------NORN-------------------
+    public static class Norn extends G.PL{
+        public static final int N = UC.nornSampleSize, MAX = UC.nornCoordMax;
+        public static final G.VS nornCoordSystem = new G.VS(0,0,MAX,MAX);
+        public Norn() {
+            super(N);
+            BUFFER.subSample(this);
+            G.V.T.set(BUFFER.bbox, nornCoordSystem);
+            transform();
+        }
+        public void drawAt(Graphics g, G.VS vs) {
+            G.V.T.set(nornCoordSystem, vs);
+            for(int i = 1; i < N; i++) {
+                g.drawLine(points[i-1].tx(), points[i-1].ty(), points[i].tx(), points[i].ty());
+            }
+        }
+        public int dist(Norn n) {
+            int res = 0;
+            for(int i = 0; i <  N; i++) {
+                int dx = points[i].x - n.points[i].x;
+                int dy = points[i].y - n.points[i].y;
+                res += dx * dx + dy * dy;
+            }
+            return res;
+        }
     }
     //-----------------Buffer-----------------
     public static class Buffer extends G.PL implements I.Show, I.Area{
@@ -49,6 +77,14 @@ public class Ink extends G.PL implements I.Show {
 
         @Override
         public void show(Graphics g) {drawNDots(g, n); bbox.draw(g);}
+
+        public void subSample(G.PL pl) {
+            int K = pl.size();
+            for(int i = 0; i < K; i++) {
+                int j = i * (n - 1) / (K - 1); // j is the index in the buffer
+                pl.points[i].set(points[j]); //copy value
+            }
+        }
     }
 
     //-----------------List--------------------------------------------

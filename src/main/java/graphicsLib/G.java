@@ -26,14 +26,40 @@ public class G {
     //---------nested class V------------
     public static class V{
         public int x, y;
+        public static Transform T = new Transform(); //single Transform project
         //constructor
         public V(int x, int y){set(x,y);}
         public void set(int x, int y) {this.x = x; this.y = y;}
         //make the data element private; make function public
         public void add(V v){x += v.x; y += v.y;}
-        public void set(V v) {
-            this.x = v.x;
-            this.y = v.y;
+        public void set(V v) {this.x = v.x; this.y = v.y;}
+        public void setT(V v) {set(v.tx(), v.ty());} //transform x and y
+        public int tx() {return x * T.n / T.d + T.dx;}
+        public int ty() {return y * T.n / T.d + T.dy;}
+
+        //----------Transform--------------
+        public static class Transform {
+            int n, d, dx, dy;
+            //old box, new VS
+            public void set(VS oVS, VS nVS) {
+                setScale(oVS.size.x, oVS.size.y, nVS.size.x, nVS.size.y);
+                dx = setOff(oVS.loc.x, oVS.size.x, nVS.loc.x, nVS.size.x);
+                dy = setOff(oVS.loc.y, oVS.size.y, nVS.loc.y, nVS.size.y);
+            }
+            public void set(BBOX bbox, VS nVS) {
+                setScale(bbox.h.size(), bbox.v.size(), nVS.size.x, nVS.size.y);
+                dx = setOff(bbox.h.lo, bbox.h.size(), nVS.loc.x, nVS.size.x);
+                dy = setOff(bbox.v.lo, bbox.v.size(), nVS.loc.y, nVS.size.y);
+            }
+            //old width, old height, new width, new height
+            public void setScale(int oW, int oH, int nW, int nH) {
+                n = (nW > nH) ? nW : nH;
+                d = (oW > oH) ? oW : oH;
+            }
+            //old & new locX
+            public int setOff(int oX, int oW, int nX, int nW) {
+                return (-oX - oW/2) * n/d  + nX + nW/2;
+            }
         }
     }
 
@@ -103,6 +129,11 @@ public class G {
         }
 
         public int size() {return points.length;}
+        public void transform() {
+            for(int i = 0; i < points.length; i ++) {
+                points[i].setT(points[i]); //transform
+            }
+        }
 
         public void drawN(Graphics g, int n) {
             for (int i = 1; i < n; i++) {

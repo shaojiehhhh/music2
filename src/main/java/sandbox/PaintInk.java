@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 public class PaintInk extends Window {
     public static Ink.List inkList = new Ink.List();
     //initialization
-    static{inkList.add(new Ink());}
+//    static{inkList.add(new Ink());}
 
     public PaintInk() {
         super("PaintInk", UC.MAIN_WINDOW_WIDTH, UC.MAIN_WINDOW_HEIGHT);
@@ -20,7 +20,12 @@ public class PaintInk extends Window {
         G.clearBack(g);
         g.setColor(Color.black);inkList.show(g);
         g.setColor(Color.red);Ink.BUFFER.show(g);
-        g.drawString("points: " + Ink.BUFFER.n, 600, 30);
+        int n = inkList.size() - 1;
+        if(n > 2) {
+            int d = inkList.get(n).norn.dist(inkList.get(n-1).norn);
+            g.setColor(d < 1000000 ? Color.black : Color.red);
+            g.drawString("dist: "+ d, 600, 30);
+        }
     }
 
     public void mousePressed(MouseEvent me) {
