@@ -9,4 +9,6 @@ public class UC {
     public static final int nornSampleSize = 20;
     public static final int nornCoordMax = 1000;
     public static final Color ink_color = Color.black;
+    public static final int noMatchDist = 500000;
+    public static final int dotThreshold = 5;
 }

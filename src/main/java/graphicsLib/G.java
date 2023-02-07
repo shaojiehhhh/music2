@@ -33,6 +33,9 @@ public class G {
         //make the data element private; make function public
         public void add(V v){x += v.x; y += v.y;}
         public void set(V v) {this.x = v.x; this.y = v.y;}
+        public void blend(V v, int k) {set((k*x+v.x)/(k+1), (k*y+v.y)/(k+1));}
+
+        //------transform-------
         public void setT(V v) {set(v.tx(), v.ty());} //transform x and y
         public int tx() {return x * T.n / T.d + T.dx;}
         public int ty() {return y * T.n / T.d + T.dy;}
