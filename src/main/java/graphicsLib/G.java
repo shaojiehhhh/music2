@@ -1,6 +1,7 @@
 package graphicsLib;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Random;
 
 public class G {
@@ -24,7 +25,7 @@ public class G {
     }
 
     //---------nested class V------------
-    public static class V{
+    public static class V implements Serializable{
         public int x, y;
         public static Transform T = new Transform(); //single Transform project
         //constructor
@@ -66,7 +67,7 @@ public class G {
         }
     }
 
-    public static class VS{
+    public static class VS implements Serializable {
        public V loc, size;
        public VS(int x, int y, int w, int h) {
            loc = new V(x, y);
@@ -91,7 +92,7 @@ public class G {
 
     }
 
-    public static class LoHi{
+    public static class LoHi implements Serializable{
         public int lo, hi;
         public LoHi(int min, int max) {lo = min; hi = max;}
         public void add(int v) {if(v < lo) {lo = v;}if(v > hi) {hi = v;}}
@@ -123,7 +124,7 @@ public class G {
     }
 
     //Pole line whole long list of x y z
-    public static class PL {
+    public static class PL implements Serializable{
         public V[] points;
 
         public PL(int n) {

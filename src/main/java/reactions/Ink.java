@@ -5,6 +5,7 @@ import global.UC;
 import graphicsLib.G;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.nio.Buffer;
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public class Ink implements I.Show {
         norn.drawAt(g, vs);
     }
     //-----------------NORN-------------------
-    public static class Norn extends G.PL{
+    public static class Norn extends G.PL implements Serializable {
         public static final int N = UC.nornSampleSize, MAX = UC.nornCoordMax;
         public static final G.VS nornCoordSystem = new G.VS(0,0,MAX,MAX);
         public Norn() {
@@ -79,7 +80,7 @@ public class Ink implements I.Show {
         public void drag(int x, int y) {add(x, y);}
 
         @Override
-        public void show(Graphics g) {drawNDots(g, n); bbox.draw(g);}
+        public void show(Graphics g) {drawNDots(g, n);}
 
         public void subSample(G.PL pl) {
             int K = pl.size();

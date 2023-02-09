@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 public class PaintInk extends Window {
     public static Ink.List inkList = new Ink.List();
     public static Shape.Prototype.List pList = new Shape.Prototype.List();
+    public static String recognize = "";
     //initialization
 //    static{inkList.add(new Ink());}
 
@@ -23,6 +24,7 @@ public class PaintInk extends Window {
         G.clearBack(g);
         g.setColor(Color.black);inkList.show(g);
         g.setColor(Color.red);Ink.BUFFER.show(g);
+        g.drawString("saw "+recognize, 700, 40);
 //        int n = inkList.size() - 1;
 //        if(n > 2) {
 //            int d = inkList.get(n).norn.dist(inkList.get(n-1).norn);
@@ -44,6 +46,8 @@ public class PaintInk extends Window {
     public void mouseReleased(MouseEvent me) {
         Ink ink = new Ink();
         Shape.Prototype proto;
+        Shape s = Shape.recognize(ink);
+        recognize = (s == null) ? "UNRECOGNIZED" : s.name;
         inkList.add(ink);
         if(pList.bestDist(ink.norn) < UC.noMatchDist) {
             proto = Shape.Prototype.List.bestMatch;
