@@ -1,5 +1,7 @@
 package global;
 
+import reactions.Gesture;
+
 import java.awt.*;
 
 public interface I {
@@ -14,5 +16,9 @@ public interface I {
     }
     //show is a better name than draw in this project
     public interface Show {public void show(Graphics g);}
+    public interface Act {public void act(Gesture g);}
+    //react has the same function as act
+    public interface React extends Act{public int bid(Gesture g);}
+
 }
 

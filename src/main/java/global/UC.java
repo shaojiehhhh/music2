@@ -1,5 +1,7 @@
 package global;
 
+import reactions.Reaction;
+
 import java.awt.*;
 
 public class UC {
@@ -12,4 +14,5 @@ public class UC {
     public static final int noMatchDist = 500000;
     public static final int dotThreshold = 5;
     public static String shapeDBFILENAME = "shapeDB.DAT" ;
+    public static final int noBid = 10000;
 }
