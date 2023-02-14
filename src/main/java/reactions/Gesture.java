@@ -25,6 +25,7 @@ public class Gesture {
             if(gesture != null) {
                 Reaction r = Reaction.best(gesture);//can fail
                 if(r != null) {r.act(gesture);}
+                //TODO: need to be tested
             }
 
         }
