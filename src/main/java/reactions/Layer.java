@@ -13,14 +13,23 @@ public class Layer extends ArrayList<I.Show> implements I.Show{
 
     public Layer(String name) { //constructor
         this.name = name;
-        if(!name.equals("All")) {ALL.add(this);}
+        if(!name.equals("ALL")) {ALL.add(this);}
         byName.put(name,this);
     }
 
     @Override
     public void show(Graphics g) {
+        System.out.println("LS: " + name + size());
         for(I.Show item: this) {
             item.show(g);
         }
+    }
+
+    //nukes layers before undo
+    public static void nuke() {
+        for(I.Show layer: ALL) {
+            ((Layer) layer).clear();
+        }
+
     }
 }

@@ -10,8 +10,18 @@ import java.util.Map;
 //we are not really implementing in this abstract class
 public abstract class Reaction implements I.React{
     private static Map byShape = new Map();
+    public static List initialReactions = new List(); //used by undo to restart
     public Shape shape;
+    //constructor
+    public Reaction(String shapeName) {
+        shape = Shape.DB.get(shapeName);
+        if(shape == null) {
+            System.out.println("WT ? shape DB does not contain "+shapeName);
+        }
+    }
+
     public void enable() {
+        System.out.println("enable");
         List list = byShape.getList(shape);
         //this = one single reaction
         if(!list.contains(this)) {list.add(this);}
@@ -23,6 +33,11 @@ public abstract class Reaction implements I.React{
     //best reaction
     public static Reaction best(Gesture g) {//can return NULL
         return byShape.getList(g.shape).loBid(g);
+    }
+
+    public static void nuke() {//for undo
+        byShape.clear();
+        initialReactions.enable();
     }
     //------------------List---------------------
     public static class List extends ArrayList<Reaction> {
@@ -36,11 +51,18 @@ public abstract class Reaction implements I.React{
             //reaction is like the marketplace
             Reaction res = null;
             int bestSoFar = UC.noBid;
+            System.out.println("loBid: " + bestSoFar);
             for(Reaction r: this) {
                 int b = r.bid(g);
                 if(b < bestSoFar) {bestSoFar = b;res = r;}
             }
             return res;
+        }
+
+        public void enable() {
+            for(Reaction r: this) {
+                r.enable();
+            }
         }
     }
     //------------------Map------------------------
