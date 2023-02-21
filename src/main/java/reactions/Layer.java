@@ -32,4 +32,7 @@ public class Layer extends ArrayList<I.Show> implements I.Show{
         }
 
     }
+    public static void createAll(String[] a) {
+        for(String s: a) {new Layer(s);}
+    }
 }
