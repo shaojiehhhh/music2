@@ -19,7 +19,6 @@ public class Layer extends ArrayList<I.Show> implements I.Show{
 
     @Override
     public void show(Graphics g) {
-        System.out.println("LS: " + name + size());
         for(I.Show item: this) {
             item.show(g);
         }

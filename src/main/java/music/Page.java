@@ -65,9 +65,8 @@ public class Page extends Mass {
         int n = sysFmt.size();
         sysFmt.add(sf); sysFmt.staffOffset.add(yOff);
         for(int i = 0; i < nSys; i++) {
-            sysList.get(i).staffs.add(new Staff(n, sf));
+            sysList.get(i).addStaff(new Staff(n, sf));
         }
-
     }
 
     @Override
