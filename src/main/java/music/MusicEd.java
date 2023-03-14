@@ -15,7 +15,7 @@ public class MusicEd extends Window {
     public static Page PAGE; //one single page - will create in gesture
 
     static {
-        Layer.createAll("BACK FORE".split(" "));
+        Layer.createAll("BACK NOTE FORE".split(" "));
 //        new Layer("BACK");
 //        new Layer("FORE");
     }
@@ -45,6 +45,11 @@ public class MusicEd extends Window {
         g.setColor(Color.green);
         Ink.BUFFER.show(g);
         Layer.ALL.show(g);
+        if(PAGE != null){
+            Glyph.CLEF_G.showAt(g, 8, 100, PAGE.margins.top + 4*8);
+            Glyph.HEAD_HALF.showAt(g, 8, 200, PAGE.margins.top + 4*8);
+            Glyph.HEAD_Q.showAt(g, 8, 200, PAGE.margins.top + 4*8);
+        }
     }
     public void mousePressed(MouseEvent me) {
         Gesture.AREA.dn(me.getX(), me.getY());

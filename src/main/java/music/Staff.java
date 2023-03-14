@@ -53,14 +53,71 @@ public class Staff extends Mass {
                 PAGE.sysFmt.get(Staff.this.iStaff).toggleBarContinues();
             }
         });
+
+        addReaction(new Reaction("SW-SW") { //add Note to Staff
+            @Override
+            public int bid(Gesture g) {
+                int x = g.vs.xM(), y = g.vs.yM();
+                if(x < PAGE.margins.left || x > PAGE.margins.right) return UC.noBid;
+                int H = Staff.this.h();
+                int top = Staff.this.yTop() - H;
+                int bot = Staff.this.yBot()+H;
+                if(y < top || y > bot) return UC.noBid;
+                return 10;
+            }
+
+            @Override
+            public void act(Gesture g) {
+                new Head(Staff.this, g.vs.xM(), g.vs.yM());
+            }
+        });
+
+        addReaction(new Reaction("W-S"){ // add Q Rest (Quarter test)
+            public int bid(Gesture g){
+                int x = g.vs.xL(), y = g.vs.yM();
+                if(x < PAGE.margins.left || x > PAGE.margins.right){return UC.noBid;}
+                int H = Staff.this.h(), top = Staff.this.yTop()-H,  bot = Staff.this.yBot()+H;
+                if(y < top || y > bot){return UC.noBid;}
+                return 10;
+            }
+            public void act(Gesture g){
+                Time t = Staff.this.sys.getTime(g.vs.xL());
+                new Rest(Staff.this, t);
+            }
+        });
+
+        addReaction(new Reaction("E-S"){ // add Eighth Rest
+            public int bid(Gesture g){
+                int x = g.vs.xL(), y = g.vs.yM();
+                if(x < PAGE.margins.left || x > PAGE.margins.right){return UC.noBid;}
+                int H = Staff.this.h(), top = Staff.this.yTop()-H,  bot = Staff.this.yBot()+H;
+                if(y < top || y > bot){return UC.noBid;}
+                return 10;
+            }
+            public void act(Gesture g){
+                Time t = Staff.this.sys.getTime(g.vs.xL());
+                (new Rest(Staff.this, t)).nFlag = 1;
+            }
+        });
     }
 
     public int sysOff() {return sys.fmt.staffOffset.get(iStaff);}
     public int yTop() {return sys.yTop() + sysOff();}
     public int yBot() {return yTop() + fmt.height();}
+    public int h() {return fmt.H;}
+
+    public int yLine(int n){return yTop() + n*h();}
+
+    public int lineOfY(int y) {
+        int H = h();
+        int bias = 100;
+        int top = yTop() - H*bias;
+        return (y- top* H/2)/H - bias;
+    }
 
     @Override
     public void show(Graphics g) {}
+
 
     //-------------------Staff.Fmt-----------------------
     public static class Fmt {
