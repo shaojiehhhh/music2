@@ -47,8 +47,10 @@ public class MusicEd extends Window {
         Layer.ALL.show(g);
         if(PAGE != null){
             Glyph.CLEF_G.showAt(g, 8, 100, PAGE.margins.top + 4*8);
-            Glyph.HEAD_HALF.showAt(g, 8, 200, PAGE.margins.top + 4*8);
-            Glyph.HEAD_Q.showAt(g, 8, 200, PAGE.margins.top + 4*8);
+            int H = 32;
+            Glyph.HEAD_Q.showAt(g, H, 200, PAGE.margins.top + 4*H);
+            g.setColor(Color.red);
+            g.drawRect(200,PAGE.margins.top + 3*H, 24*H/10, 2*H);
         }
     }
     public void mousePressed(MouseEvent me) {

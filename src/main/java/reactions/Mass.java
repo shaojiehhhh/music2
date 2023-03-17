@@ -11,7 +11,7 @@ public abstract class Mass extends Reaction.List implements I.Show{
         if(layer != null) {layer.add(this);}
         else {System.out.println("Bad Layer Name: " + layerName);}
     }
-    public void delete() {
+    public void deleteMass() {
         clearAll(); //clear all reaction from this list and byShape;
         layer.remove(this); //remove itself from list
     }
