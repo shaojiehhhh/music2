@@ -1,6 +1,7 @@
 package reactions;
 
 import global.I;
+import graphicsLib.G;
 
 public abstract class Mass extends Reaction.List implements I.Show{
     public Layer layer;
@@ -15,5 +16,10 @@ public abstract class Mass extends Reaction.List implements I.Show{
         clearAll(); //clear all reaction from this list and byShape;
         layer.remove(this); //remove itself from list
     }
+
+    public boolean equals(Object o) {return this == o;}
+
+    private int hashCode = G.rnd(10000000);
+    public int hashCode() {return hashCode;}
 
 }

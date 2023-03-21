@@ -16,6 +16,7 @@ public class Glyph{
     public static Glyph CLEF_TAB = new Glyph((char)61581, 10, -1, 1);
     public static Glyph CLEF_G8 = new Glyph((char)61639, 16, -3, 1);
 
+    public static Glyph HEAD_W = new Glyph((char)61485, 16, 0, 7);
     public static Glyph HEAD_HALF = new Glyph((char)61485, 16, 0, 7);
     public static Glyph HEAD_Q = new Glyph((char)61486, 16, 0, 7);
 
@@ -54,7 +55,7 @@ public class Glyph{
             theSize = size;
         }
         Font f = g.getFont(); // fetch old font so that we can restore it
-        g.setColor(Color.BLACK);
+//        g.setColor(Color.BLACK);
         g.setFont(theFont);
         g.drawString(""+code, x + (int)Math.floor(dx*H), y + (int)Math.floor(dy*H));
 //        g.setColor(Color.RED); //for debugging purpose

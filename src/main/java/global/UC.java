@@ -21,4 +21,6 @@ public class UC {
     public static String FontName = "Sinfonia";
     public static final int augDotoffsetRest = 24;
     public static final int augDotSpaceRest = 9;
+    public static int gapRestToFirstDot = 30;
+    public static int gapBetweenAugDots = 12;
 }

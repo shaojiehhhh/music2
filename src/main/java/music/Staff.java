@@ -54,7 +54,7 @@ public class Staff extends Mass {
             }
         });
 
-        addReaction(new Reaction("SW-SW") { //add Note to Staff
+        addReaction(new Reaction("SW-SW") { //add Note head to Staff
             @Override
             public int bid(Gesture g) {
                 int x = g.vs.xM(), y = g.vs.yM();

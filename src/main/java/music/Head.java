@@ -8,7 +8,7 @@ import reactions.Reaction;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Head extends Mass {
+public class Head extends Mass implements Comparable<Head>{//Node head
     public Glyph forcedGlyph = null; // null means use the normal Glyph calculated from the flag count
     public Staff staff;
     public int line;
@@ -47,18 +47,56 @@ public class Head extends Mass {
                 }
             }
         });
+
+        addReaction(new Reaction("DOT") {//add augmentation dots
+            @Override
+            public int bid(Gesture g) {
+                int xH = Head.this.x(), yH = Head.this.y(), H = Head.this.staff.h(), W = Head.this.W();
+                int x = g.vs.xM(), y = g.vs.yM();
+                if(x < xH || x > xH + 2*W || y < yH - H || y > yH + H) {return UC.noBid;}
+                return Math.abs(xH + W -x) + Math.abs(yH - y);
+            }
+
+            @Override
+            public void act(Gesture g) {
+                if(Head.this.stem != null) {
+                    Head.this.stem.cycleDot();
+                }
+            }
+        });
     }
 
-    public int x(){return time.x;} //STUB
+    public int x(){
+        int res = time.x;
+        if(wrongSide) {
+            res += (stem != null && stem.isUp) ? W() : -W();
+        }
+        return res;
+    }
     public int y(){return staff.yLine(line);}
     public int W(){return 24*staff.h()/10;} // Width of a note head, RIGHT = LEFT + W();
-    public Glyph normalGlyph(){return Glyph.HEAD_Q;} //STUB
-    public void delete(){time.heads.remove(this);} //STUB
+    public Glyph normalGlyph(){
+        if(stem == null) {return Glyph.HEAD_Q;}
+        if(stem.nFlag == -1) {return Glyph.HEAD_HALF;}
+        if(stem.nFlag == -2) {return Glyph.HEAD_W;}
+        return Glyph.HEAD_Q;
+    }
+    public void deleteHead(){time.heads.remove(this);} //STUB
 
     @Override
     public void show(Graphics g) {
         int H = staff.h();
+        g.setColor(wrongSide ? Color.green : Color.blue); //for debugging
+        if(stem != null && stem.heads.size() != 0 && this == stem.firstHead()) {
+            g.setColor(Color.red);
+        }
         (forcedGlyph != null ? forcedGlyph : normalGlyph()).showAt(g, H, x(), y());
+        if(stem != null) {
+            int off = UC.gapRestToFirstDot, sp = UC.gapBetweenAugDots;
+            for(int i = 0; i < stem.nDot; i++) {
+                g.fillOval(time.x + off + i*sp, y() - 3*H/2, H*2/3, H*2/3);
+            }
+        }
     }
 
     public void unStem(){
@@ -75,6 +113,12 @@ public class Head extends Mass {
         s.heads.add(this); // before it joins the Stem's heads list
         stem = s; // reference your stem - this head now has a stem.
     }
+
+    @Override
+    public int compareTo(Head h) {
+        return (staff.iStaff != h.staff.iStaff) ? (staff.iStaff - h.staff.iStaff) : (line - h.line);
+    }
+
 
     //----------------HEAD LIST---------------------
     public static class List extends ArrayList<Head> {
