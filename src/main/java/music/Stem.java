@@ -5,17 +5,20 @@ import reactions.Gesture;
 import reactions.Reaction;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-public class Stem extends Duration{
+public class Stem extends Duration implements Comparable<Stem>{
     public Staff staff;
     public Head.List heads = new Head.List();
     public boolean isUp = true;
+    public Beam beam = null; //stem is not required to have beam on it (legal)
 
     public Stem(Staff staff, boolean up){
         this.staff = staff;
         isUp = up;
+//        staff.sys.stems.addStem(this); //this should be done in time.stemHeads
 
         addReaction(new Reaction("E-E") {//inc FLAG on stem
             @Override
@@ -65,7 +68,10 @@ public class Stem extends Duration{
         return h.staff.yLine(line);
     }
 
-    public void deleteStem(){deleteMass();} // only call if list of heads is empty
+    public void deleteStem(){// only call if list of heads is empty
+        staff.sys.stems.remove(this);
+        deleteMass();
+    }
 
     public void setWrongSides() {//call by time.stemHeads
         Collections.sort(heads);
@@ -98,4 +104,23 @@ public class Stem extends Duration{
             }
         }
     }
-}
+
+    @Override
+    public int compareTo(Stem s) {
+        return x() - s.x();
+    }
+
+
+    //-----------------------------List----------------------------//
+    public static class List extends ArrayList<Stem> {
+        public int yMin = 1000000, yMax = -1000000;
+        public void addStem(Stem s) {
+            add(s);
+            if(s.yLo() < yMin) {yMin = s.yLo();}
+            if(s.yHi() < yMax) {yMax = s.yHi();}
+        }
+        public void sort() {
+            Collections.sort(this);
+        }
+    }
+ }

@@ -30,6 +30,7 @@ public class Time {
         }else{
             s.setWrongSides();
         }
+        s.staff.sys.stems.addStem(s);
     }
 
     //-------------------------List--------------------------------

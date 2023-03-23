@@ -54,6 +54,15 @@ public class MusicEd extends Window {
 //            g.setColor(Color.red);
 //            g.drawRect(200,PAGE.margins.top + 3*H, 24*H/10, 2*H);
         }
+        g.setColor(Color.black);
+        int H = 8, x1 = 100, x2 = 200;
+        Beam.setMasterBeam(x1, 100+G.rnd(100), x2, 100+G.rnd(100));
+        Beam.drawBeamstack(g,0,1,x1, x2, -H);
+        g.setColor(Color.ORANGE);
+        Beam.drawBeamstack(g,1,3,x1+10, x2-10, -H);
+
+//        Beam.setPoly(100,100+G.rnd(100),200,100+G.rnd(100),8);
+//        g.fillPolygon(Beam.poly);
     }
     public void mousePressed(MouseEvent me) {
         Gesture.AREA.dn(me.getX(), me.getY());
